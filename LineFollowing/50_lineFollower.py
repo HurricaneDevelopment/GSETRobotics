@@ -15,8 +15,9 @@ writeDebug("===Starting Program===");
 psm.BBM1.setSpeedSync(50)
 
 while(not psm.isKeyPressed())
-	writeDebug(psm.BAS1)
-	sleep(50)
+	writeDebug(psm.BAS1.lightSensorNXT(true))
+	psm.screen.termPrintln(psm.BAS1.lightSensorNXT(true))
+	sleep(100)
 
 psm.BBM1.brakeSync()
 psm.BBM2.brakeSync()
