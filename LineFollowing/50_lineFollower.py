@@ -5,21 +5,24 @@ import datetime
 psm = PiStorms()
 debugString = ""
 
-def writeDebug( str ):
-	debugString += str + "\n"
+def writeDebug( message ):
+	debugString += str(message) + "\n"
 
 def dinit():
-	target = open("/var/robolog/" + datetime.datetime.now().strftime("%m-%d-%Y_%H-%M-%S"),'w+');
+	target = open("/var/robolog/" + datetime.datetime.now().strftime("%m-%d-%Y_%H-%M-%S"),'w+')
+	target.write(debugString)
+	target.close()
+
+	psm.BBM1.brakeSync()
+	psm.BBM2.brakeSync()
 
 writeDebug("===Starting Program===");
 psm.BBM1.setSpeedSync(50)
 
 while(not psm.isKeyPressed())
-	writeDebug(psm.BAS1.lightSensorNXT(true))
-	psm.screen.termPrintln(psm.BAS1.lightSensorNXT(true))
+	level = psm.BAS1.lightSensorNXT(true)
+	writeDebug(level)
+	psm.screen.termPrintln(level)
 	sleep(100)
-
-psm.BBM1.brakeSync()
-psm.BBM2.brakeSync()
 
 dinit()
