@@ -1,5 +1,5 @@
 class PID(Object):
-	def __init__(self,target,PGain,IGain,DGain,IMin,IMax,input = 0,OMin = -1000,OMax = 1000):
+	def __init__(self,target,PGain,IGain,DGain,IMin,IMax,input = 0,OMin = -1000,OMax = 1000,iResetMin = 0,iResetMax = 0):
 		setGain(PGain,IGain,DGain)
 		setPoint(Target)
 		setIMin(IMin)
@@ -28,6 +28,10 @@ class PID(Object):
 		sellf.oMax = max
 	def setOMin(min):
 		sellf.oMin = min
+	def iResetMin(min):
+		self.iResetMin = min
+	def iResetMax(max):
+		self.iResetMax = max
 
 	def setPoint(target):
 		self.setpoint = target
@@ -41,7 +45,9 @@ class PID(Object):
 		pTerm = pGain * error
 		self.iState += error
 		iTerm = iGain * self.iState
-		iTerm = sel.iMax if self.iState > self.iMax else self.iMin if self.iState < self.iMin else iTerm
+		iTerm = self.iMax if self.iState > self.iMax else (self.iMin if self.iState < self.iMin else iTerm)
+		iTerm = (0 if error <= iResetMax and error >= iResetMin else iTerm) if iResetMin != 0 and iResetmax != 0 else iTerm
 		dTerm = dGain * (input - self.dState)
+		self.dState = input
 		output = pTerm + iTerm + dTerm
-		return sel.oMax if output > self.oMax else self.oMin if output < self.oMin else output
+		return sel.oMax if output > self.oMax else (self.oMin if output < self.oMin else output)
