@@ -1,6 +1,6 @@
 class PID(object):
 	def __init__(self,target,PGain,IGain,DGain,IMin,IMax,input = 0,OMin = -1000,OMax = 1000,iResetMin = 0,iResetMax = 0):
-		self.setGain(PGain,IGain,DGain)
+		self.setGains(PGain,IGain,DGain)
 		self.setPoint(target)
 		self.setIMin(IMin)
 		self.setIMax(IMax)
@@ -15,7 +15,7 @@ class PID(object):
 		self.iGain = gain
 	def setDGain(self,gain):
 		self.dGain = gain
-	def setGain(self,pGain,iGain,dGain):
+	def setGains(self,pGain,iGain,dGain):
 		self.setPGain(pGain)
 		self.setIGain(iGain)
 		self.setDGain(dGain)
@@ -50,5 +50,5 @@ class PID(object):
 		dTerm = self.dGain * (input - self.dState)
 		self.dState = input
 		output = pTerm + iTerm + dTerm
-		print '%f\t%f\t%f\t%f' % (pTerm,iTerm,dTerm,output)
+		#print '%f\t%f\t%f\t%f' % (pTerm,iTerm,dTerm,output)
 		return self.oMax if output > self.oMax else (self.oMin if output < self.oMin else output)
