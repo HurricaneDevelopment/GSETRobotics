@@ -1,53 +1,55 @@
-class PID(Object):
+class PID(object):
 	def __init__(self,target,PGain,IGain,DGain,IMin,IMax,input = 0,OMin = -1000,OMax = 1000,iResetMin = 0,iResetMax = 0):
-		setGain(PGain,IGain,DGain)
-		setPoint(Target)
-		setIMin(IMin)
-		setIMax(IMax)
-		setOMin(OMin)
-		setOMax(OMax)
+		self.setGain(PGain,IGain,DGain)
+		self.setPoint(target)
+		self.setIMin(IMin)
+		self.setIMax(IMax)
+		self.setOMin(OMin)
+		self.setOMax(OMax)
 		self.iState = 0
 		self.dState = input
 
-	def setPGain(gain):
+	def setPGain(self,gain):
 		self.pGain = gain
-	def setIGain(gain):
+	def setIGain(self,gain):
 		self.iGain = gain
-	def setDGain(gain):
+	def setDGain(self,gain):
 		self.dGain = gain
-	def setGain(pGain,iGain,dGain):
-		setPGain(pGain)
-		setIGain(iGain)
-		setDGain(dGain)
+	def setGain(self,pGain,iGain,dGain):
+		self.setPGain(pGain)
+		self.setIGain(iGain)
+		self.setDGain(dGain)
 
-	def setIMax(max):
-		sellf.iMax = max
-	def setIMin(min):
-		sellf.iMin = min
-	def setOMax(max):
-		sellf.oMax = max
-	def setOMin(min):
-		sellf.oMin = min
-	def iResetMin(min):
+	def setIMax(self,max):
+		self.iMax = max
+	def setIMin(self,min):
+		self.iMin = min
+	def setOMax(self,max):
+		self.oMax = max
+	def setOMin(self,min):
+		self.oMin = min
+	def iResetMin(self,min):
 		self.iResetMin = min
-	def iResetMax(max):
+	def iResetMax(self,max):
 		self.iResetMax = max
 
-	def setPoint(target):
+	def setPoint(self,target):
 		self.setpoint = target
 
-	def reset(input = 0):
+	def reset(self,input = 0):
 		self.iState = 0
 		self.dState = input
 
-	def calculate(input):
+	def calculate(self,input):
 		error = input - self.setpoint
-		pTerm = pGain * error
+		pTerm = self.pGain * error
 		self.iState += error
-		iTerm = iGain * self.iState
+		iTerm = self.iGain * self.iState
 		iTerm = self.iMax if self.iState > self.iMax else (self.iMin if self.iState < self.iMin else iTerm)
-		iTerm = (0 if error <= iResetMax and error >= iResetMin else iTerm) if iResetMin != 0 and iResetmax != 0 else iTerm
-		dTerm = dGain * (input - self.dState)
+		iTerm = (0 if error <= self.iResetMax and error >= self.iResetMin else iTerm) if self.iResetMin != 0 and self.iResetMax != 0 else iTerm
+		iTerm = 0 if self.iGain == 0 else iTerm
+		dTerm = self.dGain * (input - self.dState)
 		self.dState = input
 		output = pTerm + iTerm + dTerm
-		return sel.oMax if output > self.oMax else (self.oMin if output < self.oMin else output)
+		#print '%f\t%f\t%f\t%f' % (pTerm,iTerm,dTerm,output)
+		return self.oMax if output > self.oMax else (self.oMin if output < self.oMin else output)
