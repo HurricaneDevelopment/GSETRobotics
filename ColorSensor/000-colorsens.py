@@ -8,3 +8,4 @@ while (not psm.isKeyPressed()):
 	print color
 
 rpi.dinit() # Rpi deinitialize routine
+alias piload='function _piload(){ cp "$1" "/home/pi/PiStorms/programs/02-Student_Programs/$1"; };_piload'
