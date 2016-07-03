@@ -23,8 +23,8 @@ while (not psm.isKeyPressed()):
 	####	PI Controller
 	error = lightSens - offset # How far off the robot is from the offset
 	totalError += error # iterate the integral of error
-	totalError = (totalError > iMax) ? iMax : (totalError < iMin) ? iMin : totalError # Limit integral on the range [iMin,iMax]
-	totalError = (-15 <= error and error <= 15) ? 0 : totalError # Reset integral term on the error range [iResetMin,iResetMax]
+	totalError = iMax if totalError > iMax else iMin if totalError < iMin else totalError # Limit integral on the range [iMin,iMax]
+	totalError = 0 if -15 <= error and error <= 15 else totalError # Reset integral term on the error range [iResetMin,iResetMax]
 	output = pGain * error + iGain * totalError # Combine Proportion and Integral terms
 
 	psm.BBM2.setSpeed(-1 * (-1 * output + basePower))
